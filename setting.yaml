@@ -1,6 +1,0 @@
-server:
-  id: 'pmw'
-  pw: 'special120'
-  host: 'pmw.iptime.org'
-  mongodb_port: '9002'
-  mongodb_name: 'test'
