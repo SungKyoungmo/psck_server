@@ -2,11 +2,14 @@ extends layout
 
 block content
   script(src='//developers.kakao.com/sdk/js/kakao.min.js')
+  script(src="js-yaml.min.js")
   a#kakao-login-btn
     a(href='http://alpha-developers.kakao.com/logout')
+
     script(type='text/javascript').
       //<![CDATA[
       // 사용할 앱의 JavaScript 키를 설정해 주세요.
+
       Kakao.init('3dee48e4ccc6b7755390974f30a54832');
       // 카카오 로그인 버튼을 생성합니다.
       Kakao.Auth.createLoginButton({

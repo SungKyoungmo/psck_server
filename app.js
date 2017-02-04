@@ -55,7 +55,6 @@ io.on('connection',function(client){
   client.emit('connection', 'hi');
   console.log('Message from client :');
 });
-
 //mongodb
 var mongoose = require('mongoose');
 
@@ -69,5 +68,14 @@ db.once('open', function(){
     // CONNECTED TO MONGODB SERVER
     console.log("Connected to mongod server");
 });
+const yaml = require('js-yaml');
+const fs = require('fs');
 
-mongoose.connect('mongodb://pmw:special120@pmw.iptime.org:9002/test');
+try {
+  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
+  const indentedJson = JSON.stringify(config, null, 4);
+  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
+  mongoose.connect(temp);
+} catch (e) {
+  console.log(temp);
+}
