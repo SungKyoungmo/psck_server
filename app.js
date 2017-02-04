@@ -44,3 +44,30 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+//Minwoo
+var socket_http = require("http");
+var socket_server = socket_http.createServer(function(req, res) {});
+var socketio = require('socket.io');
+var io = socketio.listen(socket_server);
+io.on('connection',function(client){
+  client.write('hi');
+  client.emit('connection', 'hi');
+  console.log('Message from client :');
+});
+
+//mongodb
+var mongoose = require('mongoose');
+
+// ......
+// [ CONFIGURE mongoose ]
+// CONNECT TO MONGODB SERVER
+
+var db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
+mongoose.connect('mongodb://pmw:special120@pmw.iptime.org:9002/test');
