@@ -73,13 +73,12 @@ db.once('open', function(){
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-try {
-  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
-  const indentedJson = JSON.stringify(config, null, 4);
-  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
-  mongoose.connect(temp);
-} catch (e) {
-  console.log(temp);
-}
 
-var tep21;
+//try {
+//  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
+//  const indentedJson = JSON.stringify(config, null, 4);
+//  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
+//  mongoose.connect(temp);
+//} catch (e) {
+//  console.log(temp);
+//}
