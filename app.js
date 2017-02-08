@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var client = require('./routes/client');
 
+var mongoose = require('mongoose');
 
 var app = express();
 
@@ -27,13 +28,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/client',client);
+
+app.post('/test', require('./routes/test').post);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -48,6 +51,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 //Minwoo
+
 var socket_http = require("http");
 var socket_server = socket_http.createServer(function(req, res) {});
 var socketio = require('socket.io');
@@ -57,8 +61,10 @@ io.on('connection',function(client){
   client.emit('connection', 'hi');
   console.log('Message from client :');
 });
+
+
+
 //mongodb
-var mongoose = require('mongoose');
 
 // ......
 // [ CONFIGURE mongoose ]
@@ -74,11 +80,43 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 
 
-//try {
-//  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
-//  const indentedJson = JSON.stringify(config, null, 4);
-//  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
-//  mongoose.connect(temp);
-//} catch (e) {
-//  console.log(temp);
-//}
+try {
+  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
+  const indentedJson = JSON.stringify(config, null, 4);
+  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
+  mongoose.connect(temp);
+} catch (e) {
+  console.log(temp);
+}
+
+
+
+var Schema = mongoose.Schema
+var ThingSchema = new Schema({
+
+  '_id': Schema.Types.ObjectId,
+  'id': String,
+  'pw': String
+
+});
+
+var Thing = mongoose.model('user', ThingSchema, 'user');
+
+
+global.array2 = new Array()
+
+Thing.find({}, function(err, docs){
+
+  if(docs.length == 0) {
+
+    console.log("not data");
+  }
+  for(var i=0, size=docs.length; i<size; i++) {
+
+    var name = docs[i].id;
+    global.array2.push(name);
+    console.log(name);
+
+  }
+});
+
