@@ -30,6 +30,9 @@ app.use('/users', users);
 app.use('/client',client);
 
 app.post('/test', require('./routes/test').post);
+app.post('/friend/add', require('./routes/friend/add').post);
+app.post('/device/info', require('./routes/device/info').post);
+app.post('/status/login', require('./routes/status/login').post);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -103,7 +106,9 @@ var ThingSchema = new Schema({
 var Thing = mongoose.model('user', ThingSchema, 'user');
 
 
-global.array2 = new Array()
+global.id = new Array()
+
+
 
 Thing.find({}, function(err, docs){
 
@@ -114,9 +119,15 @@ Thing.find({}, function(err, docs){
   for(var i=0, size=docs.length; i<size; i++) {
 
     var name = docs[i].id;
-    global.array2.push(name);
+    global.id.push(name);
     console.log(name);
 
   }
+
 });
+var friend = require('./model/friends');
+
+
+
+mongoose.disconnect();
 
