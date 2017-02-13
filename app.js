@@ -31,6 +31,8 @@ app.use('/client',client);
 
 app.post('/test', require('./routes/test').post);
 app.post('/friend/add', require('./routes/friend/add').post);
+app.post('/friend/info', require('./routes/friend/info').post);
+
 app.post('/device/info', require('./routes/device/info').post);
 app.post('/status/login', require('./routes/status/login').post);
 
@@ -127,7 +129,7 @@ Thing.find({}, function(err, docs){
 });
 var friend = require('./model/friends');
 
-
+global.deviceinfo = {}
 
 mongoose.disconnect();
 
