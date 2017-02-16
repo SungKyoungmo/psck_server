@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var client = require('./routes/client');
-
+var chat = require('./routes/chat');
 var mongoose = require('mongoose');
 
 var app = express();
@@ -27,7 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/client',client);
+app.use('/client', client);
+app.use('/chat', chat);
 
 app.post('/test', require('./routes/test').post);
 app.post('/friend/add', require('./routes/friend/add').post);
@@ -38,36 +39,34 @@ app.post('/status/login', require('./routes/status/login').post);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+
+//socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
+    });
+});
+http.listen(3001, function(){
+    console.log('listening on *:3000');
 });
 
 module.exports = app;
-
-//Minwoo
-
-var socket_http = require("http");
-var socket_server = socket_http.createServer(function(req, res) {});
-var socketio = require('socket.io');
-var io = socketio.listen(socket_server);
-io.on('connection',function(client){
-  client.write('hi');
-  client.emit('connection', 'hi');
-  console.log('Message from client :');
-});
-
-
 
 //mongodb
 
@@ -86,12 +85,12 @@ const fs = require('fs');
 
 
 try {
-  const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
-  const indentedJson = JSON.stringify(config, null, 4);
-  var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
-  mongoose.connect(temp);
+    const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
+    const indentedJson = JSON.stringify(config, null, 4);
+    var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
+    mongoose.connect(temp);
+
 } catch (e) {
-  console.log(temp);
 }
 
 
@@ -99,9 +98,9 @@ try {
 var Schema = mongoose.Schema
 var ThingSchema = new Schema({
 
-  '_id': Schema.Types.ObjectId,
-  'id': String,
-  'pw': String
+    '_id': Schema.Types.ObjectId,
+    'id': String,
+    'pw': String
 
 });
 
@@ -114,17 +113,17 @@ global.id = new Array()
 
 Thing.find({}, function(err, docs){
 
-  if(docs.length == 0) {
+    if(docs.length == 0) {
 
-    console.log("not data");
-  }
-  for(var i=0, size=docs.length; i<size; i++) {
+        console.log("not data");
+    }
+    for(var i=0, size=docs.length; i<size; i++) {
 
-    var name = docs[i].id;
-    global.id.push(name);
-    console.log(name);
+        var name = docs[i].id;
+        global.id.push(name);
+        console.log(name);
 
-  }
+    }
 
 });
 var friend = require('./model/friends');
@@ -132,4 +131,3 @@ var friend = require('./model/friends');
 global.deviceinfo = {}
 
 mongoose.disconnect();
-
