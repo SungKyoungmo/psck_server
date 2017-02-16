@@ -14,10 +14,12 @@ db.once('open', function(){
     console.log("Connected to mongod server");
 });
 try {
-    const config = yaml.safeLoad(fs.readFileSync('setting.yaml', 'utf8'));
+    const yaml = require('js-yaml');
+    const fs = require('fs');
+    const config = yaml.safeLoad(fs.readFileSync('../setting.yaml', 'utf8'));
     const indentedJson = JSON.stringify(config, null, 4);
     var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
-    mongoose.connect(temp);
+    //mongoose.connect(temp);
 } catch (e) {
     console.log(temp);
 }
