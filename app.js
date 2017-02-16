@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var client = require('./routes/client');
-
+var chat = require('./routes/chat');
 var mongoose = require('mongoose');
 
 var app = express();
@@ -27,7 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/client',client);
+app.use('/client', client);
+app.use('/chat', chat);
 
 app.post('/test', require('./routes/test').post);
 app.post('/friend/add', require('./routes/friend/add').post);
@@ -53,21 +54,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
-
-//Minwoo
-
-var socket_http = require("http");
-var socket_server = socket_http.createServer(function(req, res) {});
-var socketio = require('socket.io');
-var io = socketio.listen(socket_server);
-io.on('connection',function(client){
-  client.write('hi');
-  client.emit('connection', 'hi');
-  console.log('Message from client :');
+//socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+        io.emit('chat message', msg);
+    });
+});
+http.listen(3001, function(){
+    console.log('listening on *:3000');
 });
 
-
+module.exports = app;
 
 //mongodb
 
@@ -90,8 +89,8 @@ try {
   const indentedJson = JSON.stringify(config, null, 4);
   var temp = "mongodb://"+config.server.id+":"+config.server.pw+"@"+config.server.host+":"+config.server.mongodb_port+"/"+config.server.mongodb_name;
   mongoose.connect(temp);
+
 } catch (e) {
-  console.log(temp);
 }
 
 
