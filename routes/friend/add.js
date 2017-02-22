@@ -14,7 +14,7 @@ exports.post = function(req, res){
         anArray: otherArray,
         another: "item"
     });
-    var friend = require('../../model/friends');
+    var friend = require('../../models/friends');
     friend.u_id = req.body.my_id
 
     friend.f_id = req.body.add_id

@@ -25,4 +25,3 @@ try {
 }
 
 
-module.exports = mongoose.model('friends', friendSchema);

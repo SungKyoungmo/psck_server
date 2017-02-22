@@ -5,13 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var client = require('./routes/client');
-var chat = require('./routes/chat');
+
+
 var mongoose = require('mongoose');
 
 var app = express();
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,16 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/client', client);
-app.use('/chat', chat);
 
-app.post('/test', require('./routes/test').post);
-app.post('/friend/add', require('./routes/friend/add').post);
-app.post('/friend/info', require('./routes/friend/info').post);
-app.post('/device/info', require('./routes/device/info').post);
-app.post('/status/login', require('./routes/status/login').post);
+
+
+// [CONFIGURE ROUTER]
+var router = require('./routes')(app)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,6 +49,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// [CONFIGURE ROUTER]
 module.exports = app;
 
 //mongodb
@@ -79,38 +76,4 @@ try {
 
 } catch (e) {
 }
-
-var Schema = mongoose.Schema
-var ThingSchema = new Schema({
-
-  '_id': Schema.Types.ObjectId,
-  'id': String,
-  'pw': String
-
-});
-
-var Thing = mongoose.model('user', ThingSchema, 'user');
-
-
-global.id = new Array()
-
-Thing.find({}, function(err, docs){
-
-  if(docs.length == 0) {
-
-    console.log("not data");
-  }
-  for(var i=0, size=docs.length; i<size; i++) {
-
-    var name = docs[i].id;
-    global.id.push(name);
-    console.log(name);
-
-  }
-});
-var friend = require('./model/friends');
-
-global.deviceinfo = {}
-
-mongoose.disconnect();
 
