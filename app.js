@@ -33,7 +33,6 @@ app.use('/chat', chat);
 app.post('/test', require('./routes/test').post);
 app.post('/friend/add', require('./routes/friend/add').post);
 app.post('/friend/info', require('./routes/friend/info').post);
-
 app.post('/device/info', require('./routes/device/info').post);
 app.post('/status/login', require('./routes/status/login').post);
 
@@ -53,9 +52,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-//socket.io
-
 
 module.exports = app;
 
@@ -84,8 +80,6 @@ try {
 } catch (e) {
 }
 
-
-
 var Schema = mongoose.Schema
 var ThingSchema = new Schema({
 
@@ -100,8 +94,6 @@ var Thing = mongoose.model('user', ThingSchema, 'user');
 
 global.id = new Array()
 
-
-
 Thing.find({}, function(err, docs){
 
   if(docs.length == 0) {
@@ -115,7 +107,6 @@ Thing.find({}, function(err, docs){
     console.log(name);
 
   }
-
 });
 var friend = require('./model/friends');
 
