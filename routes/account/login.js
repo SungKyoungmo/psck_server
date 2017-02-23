@@ -9,7 +9,7 @@ exports.get = function(req, res){
     try{
         var Account = require("../../models/account");
 
-        Account.findOne({ u_id: req.query.u_id, u_pw: req.query.u_pw}, function(err, account){
+        Account.findOne({ u_id: req.query.u_id, u_pw: req.query.u_pw}, function(err, account) {
             if(err) return res.status(500).json({
                 error: err
             });
