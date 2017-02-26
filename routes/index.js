@@ -13,8 +13,13 @@ module.exports = function(app)
     app.use('/client', client);
     app.use('/chat', chat);
     app.post('/test', require('./test').post);
-    app.post('/friend/add', require('./friend/add').post);
+
+
+    app.get('/friend', require('./friend/list').get);
+
+    app.post('/friend', require('./friend/add').post);
     app.post('/friend/info', require('./friend/info').post);
+
     app.post('/device/info', require('./device/info').post);
     app.post('/status/login', require('./status/login').post);
 
