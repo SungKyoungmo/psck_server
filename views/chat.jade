@@ -35,12 +35,18 @@ html
             #messages li {
                 padding: 25px 10px;
             }
+            #mymessages li {
+                padding: 15px 10px;
+            }
 
             #oppmsg {
-                float: left;
                 padding: 10px;
                 background: #d0e9c6;
                 border-radius: 25px;
+            }
+            #oppid {
+                float: left;
+                margin-left: 10px;
             }
 
             #mymsg {
@@ -48,21 +54,31 @@ html
                 padding: 10px;
                 background: #9acfea;
                 border-radius: 25px;
+                margin-bottom: 15px;
             }
+            #myid{
+                float: right;
+            }
+            #mymessages{
+                float: right;
+                list-style-type: none; margin: 0; padding: 0;
+            }
+
             #divmsg {
                 overflow:auto; height: 90%;
             }
 
-
-
     body
         div#divmsg
             ul#messages
+            ul#mymessages
+
 
         div
             form(action='')
                 input#m(autocomplete='off')
                 button Send
+
 
         script(src='https://cdn.socket.io/socket.io-1.2.0.js')
 
@@ -73,16 +89,16 @@ html
 
             $('form').submit(function(){
                 socket.emit('chat message', $('#m').val());
-                $('#messages').append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                $('#mymessages').append($('<span id="myid">').text('theway')).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
                 $('#m').val('');
                 return false;
             });
+
             socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').append($('<span id="oppmsg">').text(msg)));
+                $('#messages').append($('<span id="oppid">').text('mw9027')).append($('<li>').append($('<span id="oppmsg">').text(msg)));
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });
-
-
+//$('#id').append($('<li>').append($('span id="oppid">').text('hee')));
