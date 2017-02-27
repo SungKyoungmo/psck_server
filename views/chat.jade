@@ -97,7 +97,7 @@ html
             });
 
             socket.on('chat message', function(msg){
-                $('#messages').append($('<span id="oppid">').text(msg[0])).append($('<li>').append($('<span id="oppmsg">').text(msg[1])));
+                $('#messages').append($('<span id="oppid">').text(msg['m_id'])).append($('<li>').append($('<span id="oppmsg">').text(msg['m_content'])));
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });

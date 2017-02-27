@@ -51,7 +51,7 @@ io.on('connection', function(socket){
 
 
             account.forEach(function (i) {
-                socket.emit('chat message',i['m_content'])
+                socket.emit('chat message',i)
             })
 
         }
