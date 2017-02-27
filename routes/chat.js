@@ -6,7 +6,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('chat', { title: 'Express' });
+    console.log(req.query.m_id)
+    res.render('chat', { title: 'Express',m_id: req.query.m_id });
 });
 
 
