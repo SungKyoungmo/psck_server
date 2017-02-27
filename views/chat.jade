@@ -71,7 +71,6 @@ html
     body
         div#divmsg
             ul#messages
-            ul#mymessages
 
 
         div
@@ -88,7 +87,7 @@ html
             var socket = io();
             $('form').submit(function(){
                 socket.emit('chat message', {m_id:!{JSON.stringify(m_id)},m_content: $('#m').val()});
-                $('#mymessages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
