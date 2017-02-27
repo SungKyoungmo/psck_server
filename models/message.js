@@ -8,7 +8,7 @@ mongoose.Promise = global.Promise;
 var Schema = mongoose.Schema;
 
 var ThingSchema = new Schema({
-
+    'm_id':String,
     'm_content':String
 });
 

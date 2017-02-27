@@ -2,7 +2,7 @@ html
     head
         meta(name='viewport', ,='', content='width=320, initial-scale=1')
         meta(name='viewport', ,='', content='width=500, initial-scale=1')
-        title Socket.IO chat
+        title=m_id
 
         style.
 
@@ -70,17 +70,17 @@ html
 
         script.
             var socket = io();
-
             $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
-                $('#messages').append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+
+                socket.emit('chat message', [!{JSON.stringify(m_id)}, $('#m').val()]);
+                $('#mymessages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
                 $('#m').val('');
                 return false;
             });
             socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').append($('<span id="oppmsg">').text(msg)));
+                $('#messages').append($('<span id="oppid">').text(msg[0])).append($('<li>').append($('<span id="oppmsg">').text(msg[1])));
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });

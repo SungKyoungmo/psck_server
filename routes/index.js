@@ -4,14 +4,18 @@ module.exports = function(app)
     var users = require('./users');
     var client = require('./client');
     var chat = require('./chat');
+    var kakao = require('./account/kakao');
 
 
+    app.use('/account/login/kakao', kakao)
 
     app.post('/account', require('./account/join').post);
     app.get('/account', require('./account/login').get);
+
     app.use('/users', users);
     app.use('/client', client);
     app.use('/chat', chat);
+
     app.post('/test', require('./test').post);
 
 

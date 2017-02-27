@@ -50,9 +50,9 @@ io.on('connection', function(socket){
 
         socket.broadcast.emit('chat message',msg); // 자신을 제외하고 다른 클라이언트에게 보냄
 
+        console.log(msg)
 
-
-        var new_message = new Message({'m_content':msg});
+        var new_message = new Message({'m_content':msg[1], 'm_id':msg[0]});
 
         new_message.save(function (err, createdTodoObject) {
             if (err) {
