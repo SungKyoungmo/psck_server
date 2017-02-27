@@ -26,12 +26,69 @@ var server = http.createServer(app);
  */
 
 var io = require('socket.io')(server);
+var Message = require("../models/message");
+var Id = require("../models/friend")
+
 io.on('connection', function(socket){
+    socket.broadcast.emit('chat message','new client!!!!!');
+
+    Id.find({},function (err,account) {
+        if(err) {
+        }
+        else {
+            account.forEach(function (i) {
+                socket.emit('chat id',i['op_id'])
+            })
+        }
+    })
+
+    Message.find({}, function(err, account) {
+
+        if(err) {
+
+        }
+        else {
+
+
+            account.forEach(function (i) {
+                socket.emit('chat message',i['m_content'])
+            })
+
+        }
+    })
+
     socket.on('chat message', function(msg){
         socket.broadcast.emit('chat message',msg); // 자신을 제외하고 다른 클라이언트에게 보냄
+        var new_message = new Message({'m_content':msg});
+        new_message.save(function (err, createdTodoObject) {
+            if (err) {
+                console.log(err)
+            }
+            // This createdTodoObject is the same one we saved, but after Mongo
+            // added its additional properties like _id.
+            else {
+                console.log('success')
+            }
+        });
+    });
+
+    socket.on('chat id',function (id) {
+        socket.emit('chat id',id);
+        var new_id = new Id({'op_id':id});
+        new_id.save(function (err,createdTodoObject) {
+            if (err) {
+                console.log(err)
+            }
+        });
+    });
+
+
+    socket.on('disconnect', function () {
+
+        socket.broadcast.emit('chat message','client out!!!!!');
+
     });
 });
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -55,7 +112,6 @@ function normalizePort(val) {
 
   return false;
 }
-
 /**
  * Event listener for HTTP server "error" event.
  */
@@ -83,7 +139,6 @@ function onError(error) {
       throw error;
   }
 }
-
 /**
  * Event listener for HTTP server "listening" event.
  */
