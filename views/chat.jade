@@ -87,7 +87,7 @@ html
         script.
             var socket = io();
             $('form').submit(function(){
-                socket.emit('chat message', [!{JSON.stringify(m_id)}, $('#m').val()]);
+                socket.emit('chat message', {m_id:!{JSON.stringify(m_id)},m_content: $('#m').val()});
                 $('#mymessages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())

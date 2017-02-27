@@ -30,7 +30,7 @@ var Message = require("../models/message");
 var Id = require("../models/friend")
 
 io.on('connection', function(socket){
-    socket.broadcast.emit('chat message','new client!!!!!');
+    socket.broadcast.emit('chat message',{m_id:'',m_content:'new client!!!!!'});
 
     Id.find({},function (err,account) {
         if(err) {
@@ -58,11 +58,12 @@ io.on('connection', function(socket){
     })
 
     socket.on('chat message', function(msg){
+
         socket.broadcast.emit('chat message',msg); // 자신을 제외하고 다른 클라이언트에게 보냄
 
         console.log(msg)
 
-        var new_message = new Message({'m_content':msg[1], 'm_id':msg[0]});
+        var new_message = new Message(msg);
 
         new_message.save(function (err, createdTodoObject) {
             if (err) {
@@ -89,7 +90,7 @@ io.on('connection', function(socket){
 
     socket.on('disconnect', function () {
 
-        socket.broadcast.emit('chat message','client out!!!!!');
+        socket.broadcast.emit('chat message',{m_id:'',m_content:'client out!!!!!'});
 
     });
 });
