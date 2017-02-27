@@ -36,6 +36,8 @@ var readData = function (req, res) {
 
                 })
             })
+
+            return array1
         })
 
     }
