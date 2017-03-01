@@ -39,5 +39,5 @@ exports.post = function (req, res) {
         console.log(e)
     }
 
-    res.end(json);
+    res.end(Device);
 };
