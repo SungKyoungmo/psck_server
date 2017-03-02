@@ -27,20 +27,9 @@ var server = http.createServer(app);
 
 var io = require('socket.io')(server);
 var Message = require("../models/message");
-var Id = require("../models/friend")
 
 io.on('connection', function(socket){
-    socket.broadcast.emit('chat message',{m_id:'',m_content:'new client!!!!!'});
-
-    Id.find({},function (err,account) {
-        if(err) {
-        }
-        else {
-            account.forEach(function (i) {
-                socket.emit('chat id',i['op_id'])
-            })
-        }
-    })
+    socket.broadcast.emit('notification',{m_id:'',m_content:'client in'});
 
     Message.find({}, function(err, account) {
 
@@ -72,7 +61,7 @@ io.on('connection', function(socket){
             // This createdTodoObject is the same one we saved, but after Mongo
             // added its additional properties like _id.
             else {
-                console.log('success')
+
             }
         });
     });
@@ -90,7 +79,7 @@ io.on('connection', function(socket){
 
     socket.on('disconnect', function () {
 
-        socket.broadcast.emit('chat message',{m_id:'',m_content:'client out!!!!!'});
+        socket.broadcast.emit('notification',{m_id:'',m_content:'client out'});
 
     });
 });

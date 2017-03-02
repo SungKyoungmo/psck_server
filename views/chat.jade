@@ -86,8 +86,10 @@ html
         script.
             var socket = io();
             $('form').submit(function(){
-                socket.emit('chat message', {m_id:!{JSON.stringify(m_id)},m_content: $('#m').val()});
-                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                if ($('#m').val() != '') {
+                    socket.emit('chat message', {m_id: !{JSON.stringify(m_id)}, m_content: $('#m').val()});
+                    $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                }
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
@@ -100,4 +102,10 @@ html
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });
+            socket.on('nottification', function (msg) {
+                $('#messages').append($('<span id="oppid">').text(msg['m_id'])).append($('<li>').append($('<span id="oppmsg">').text(msg['m_content'])));
+                if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
+                    $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
+            });
+
 //$('#id').append($('<li>').append($('span id="oppid">').text('hee')));
