@@ -1,7 +1,7 @@
 html
     head
-        meta(name='viewport', ,='', content='width=320, initial-scale=1')
-        meta(name='viewport', ,='', content='width=500, initial-scale=1')
+        meta(name='viewport', ,='', content='width=320, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
+        meta(name='viewport', ,='', content='width=500, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
         title=m_id
 
         style.
@@ -35,9 +35,6 @@ html
             #messages li {
                 padding: 25px 10px;
             }
-            #mymessages li {
-                padding: 15px 10px;
-            }
 
             #oppmsg {
                 padding: 10px;
@@ -56,21 +53,24 @@ html
                 border-radius: 25px;
                 margin-bottom: 15px;
             }
-            #myid{
-                float: right;
-            }
-            #mymessages{
-                float: right;
-                list-style-type: none; margin: 0; padding: 0;
-            }
 
             #divmsg {
                 overflow:auto; height: 90%;
             }
 
+            #divarea{
+                background-color: #eeeeee;
+                padding-top: 7px;
+                height: 30px;
+                text-align: center;
+                margin: 10px;
+            }
+
+
     body
         div#divmsg
             ul#messages
+
 
 
         div
@@ -78,16 +78,17 @@ html
                 input#m(autocomplete='off')
                 button Send
 
-
         script(src='https://cdn.socket.io/socket.io-1.2.0.js')
 
-        script(src='http://code.jquery.com/jquery-1.11.1.js')
+        script(src='https://code.jquery.com/jquery-1.11.1.js')
 
         script.
             var socket = io();
             $('form').submit(function(){
-                socket.emit('chat message', {m_id:!{JSON.stringify(m_id)},m_content: $('#m').val()});
-                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                if ($('#m').val() != '') {
+                    socket.emit('chat message', {m_id: !{JSON.stringify(m_id)}, m_content: $('#m').val()});
+                    $('#messages').append($('<span id="myid">')).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                }
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
@@ -100,4 +101,9 @@ html
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });
-//$('#id').append($('<li>').append($('span id="oppid">').text('hee')));
+
+            socket.on('notification', function (msg) {
+                $('#messages').append($('<ol id="divarea">').text(msg['m_content']));
+                if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
+                    $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
+            });
