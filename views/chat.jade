@@ -53,13 +53,6 @@ html
                 border-radius: 25px;
                 margin-bottom: 15px;
             }
-            #myid{
-                float: right;
-            }
-            #mymessages{
-                /*float: right;*/
-                list-style-type: none; margin: 0; padding: 0;
-            }
 
             #divmsg {
                 overflow:auto; height: 90%;
@@ -68,10 +61,9 @@ html
             #divarea{
                 background-color: #eeeeee;
                 height: 20px;
-            }
-            #msgarea{
                 text-align: center;
             }
+
 
     body
         div#divmsg
@@ -79,11 +71,11 @@ html
         //ul#mymessages
 
         div#divarea
-            div#msgarea
-                p 희중님이 들어오셨습니다.
+        //    div#msgarea
+        //        p 희중님이 들어오셨습니다.
 
 
-div
+        div
             form(action='')
                 input#m(autocomplete='off')
                 button Send
@@ -96,7 +88,7 @@ div
             var socket = io();
             $('form').submit(function(){
                 socket.emit('chat message', [!{JSON.stringify(m_id)}, $('#m').val()]);
-                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                $('#messages').append($('<span id="myid">')).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
@@ -109,4 +101,3 @@ div
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
             });
-//$('#id').append($('<li>').append($('span id="oppid">').text('hee')));
