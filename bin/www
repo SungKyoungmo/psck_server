@@ -32,7 +32,7 @@ var Id = require("../models/friend")
 io.on('connection', function(socket){
     socket.broadcast.emit('chat message','new client!!!!!');
 
-    Id.find({},function (err,account) {
+/*    Id.find({},function (err,account) {
         if(err) {
         }
         else {
@@ -40,7 +40,7 @@ io.on('connection', function(socket){
                 socket.emit('chat id',i['op_id'])
             })
         }
-    })
+    })*/
 
     Message.find({}, function(err, account) {
 
@@ -48,7 +48,6 @@ io.on('connection', function(socket){
 
         }
         else {
-
 
             account.forEach(function (i) {
                 socket.emit('chat message',i)
@@ -76,7 +75,7 @@ io.on('connection', function(socket){
         });
     });
 
-    socket.on('chat id',function (id) {
+   /* socket.on('chat id',function (id) {
         socket.emit('chat id',id);
         var new_id = new Id({'op_id':id});
         new_id.save(function (err,createdTodoObject) {
@@ -85,7 +84,7 @@ io.on('connection', function(socket){
             }
         });
     });
-
+*/
 
     socket.on('disconnect', function () {
 

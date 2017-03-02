@@ -1,7 +1,7 @@
 html
     head
-        meta(name='viewport', ,='', content='width=320, initial-scale=1')
-        meta(name='viewport', ,='', content='width=500, initial-scale=1')
+        meta(name='viewport', ,='', content='width=320, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
+        meta(name='viewport', ,='', content='width=500, initial-scale=1.0, maximum-scale=1.0, user-scalable=0')
         title=m_id
 
         style.
@@ -35,9 +35,6 @@ html
             #messages li {
                 padding: 25px 10px;
             }
-            #mymessages li {
-                padding: 15px 10px;
-            }
 
             #oppmsg {
                 padding: 10px;
@@ -60,7 +57,7 @@ html
                 float: right;
             }
             #mymessages{
-                float: right;
+                /*float: right;*/
                 list-style-type: none; margin: 0; padding: 0;
             }
 
@@ -68,17 +65,28 @@ html
                 overflow:auto; height: 90%;
             }
 
+            #divarea{
+                background-color: #eeeeee;
+                height: 20px;
+            }
+            #msgarea{
+                text-align: center;
+            }
+
     body
         div#divmsg
-            ul#messages
-            ul#mymessages
+           ul#messages
+        //ul#mymessages
+
+        div#divarea
+            div#msgarea
+                p 희중님이 들어오셨습니다.
 
 
-        div
+div
             form(action='')
                 input#m(autocomplete='off')
                 button Send
-
 
         script(src='https://cdn.socket.io/socket.io-1.2.0.js')
 
@@ -88,7 +96,7 @@ html
             var socket = io();
             $('form').submit(function(){
                 socket.emit('chat message', [!{JSON.stringify(m_id)}, $('#m').val()]);
-                $('#mymessages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
 
                 if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
                     $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
