@@ -76,35 +76,40 @@ html
         div#divmsg
             ul#messages
 
-    div
+        div
             form(action='')
                 input#m(autocomplete='off')
                 button Send
 
-    script(src='https://cdn.socket.io/socket.io-1.2.0.js')
+        script(src='https://cdn.socket.io/socket.io-1.2.0.js')
 
-    script(src='http://code.jquery.com/jquery-1.11.1.js')
+        script(src='https://code.jquery.com/jquery-1.11.1.js')
 
-    script.
-        var socket = io();
-        $('form').submit(function(){
-            if ($('#m').val() != '') {
-                socket.emit('chat message', {m_id: !{JSON.stringify(m_id)}, m_content: $('#m').val()});
-                $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
-            }
+        script.
+            var socket = io();
+            $('form').submit(function(){
+                if ($('#m').val() != '') {
+                    socket.emit('chat message', {m_id: !{JSON.stringify(m_id)}, m_content: $('#m').val()});
+                    $('#messages').append($('<span id="myid">').text(!{JSON.stringify(m_id)})).append($('<li>').append($('<span id="mymsg">').text($('#m').val())));
+                }
 
-            if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
-                $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
-            $('#m').val('');
-            return false;
-        });
+                if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
+                    $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
+                $('#m').val('');
+                return false;
+            });
 
-        socket.on('chat message', function(msg){
-            $('#messages').append($('<span id="oppid">').text(msg['m_id'])).append($('<li>').append($('<span id="oppmsg">').text(msg['m_content'])));
-            if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
-                $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
-        });
+            socket.on('chat message', function(msg){
+                $('#messages').append($('<span id="oppid">').text(msg['m_id'])).append($('<li>').append($('<span id="oppmsg">').text(msg['m_content'])));
+                if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
+                    $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
+            });
 
+            socket.on('notification', function (msg) {
+                $('#messages').append($('<span id="oppid">').text(msg['m_id'])).append($('<li>').append($('<span id="oppmsg">').text(msg['m_content'])));
+                if ($('#divmsg').prop('scrollHeight') > $('#divmsg').height())
+                    $('#divmsg').scrollTop($('#divmsg').prop('scrollHeight'));
+            });
 
 
 //$('#id').append($('<li>').append($('span id="oppid">').text('hee')));
