@@ -27,7 +27,19 @@ exports.post = function (req, res) {
             else {
                 Device.update(
                     {u_id: req.body.u_id},
-                    {$set: {d_cpu_per: req.body.d_cpu_per, d_mem_per: req.body.d_mem_per}},
+                    {
+                        $set: {
+                            d_cpu_per: req.body.d_cpu_per,
+                            d_mem_per: req.body.d_mem_per,
+                            d_mem_avail: req.body.d_mem_avail,
+                            d_mem_total: req.body.d_mem_total,
+                            d_name: req.body.d_name,
+                            d_boot_time: req.body.d_boot_time,
+                            d_ip: req.body.d_ip,
+                            d_mac: req.body.d_mac,
+
+                        }
+                    },
                     function (err, result) {
                         if (err) throw err;
                     })
