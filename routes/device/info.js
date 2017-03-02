@@ -34,7 +34,7 @@ exports.post = function (req, res) {
                             d_mem_avail: req.body.d_mem_avail,
                             d_mem_total: req.body.d_mem_total,
                             d_name: req.body.d_name,
-                            d_boot_time: req.body.d_boot_time,
+                            d_boot_t: req.body.d_boot_t,
                             d_ip: req.body.d_ip,
                             d_mac: req.body.d_mac,
 
