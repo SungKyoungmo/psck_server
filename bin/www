@@ -27,11 +27,9 @@ var server = http.createServer(app);
 
 var io = require('socket.io')(server);
 var Message = require("../models/message");
-var Id = require("../models/friend")
 
 io.on('connection', function(socket){
-    socket.broadcast.emit('chat message','new client!!!!!');
-
+    socket.broadcast.emit('notification',{m_id:'',m_content:'client in'});
     Message.find({}, function(err, account) {
 
         if(err) {
@@ -49,9 +47,7 @@ io.on('connection', function(socket){
     socket.on('chat message', function(msg){
         socket.broadcast.emit('chat message',msg); // 자신을 제외하고 다른 클라이언트에게 보냄
 
-        console.log(msg)
-
-        var new_message = new Message({'m_content':msg[1], 'm_id':msg[0]});
+        var new_message = new Message(msg);
 
         new_message.save(function (err, createdTodoObject) {
             if (err) {
@@ -60,14 +56,13 @@ io.on('connection', function(socket){
             // This createdTodoObject is the same one we saved, but after Mongo
             // added its additional properties like _id.
             else {
-                console.log('success')
             }
         });
     });
 
     socket.on('disconnect', function () {
 
-        socket.broadcast.emit('chat message','client out!!!!!');
+        socket.broadcast.emit('notification',{m_id:'',m_content:'client out'});
 
     });
 });

@@ -22,7 +22,6 @@ exports.post = function(req, res){
                         error: err
                     });
 
-
                     if(friend != null) {
 
                         return res.status(200).json({
